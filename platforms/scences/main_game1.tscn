@@ -1,0 +1,99 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scences/stars.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scences/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scences/enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/main_game.gd" type="Script" id=4]
+[ext_resource path="res://scences/tiles.res" type="TileSet" id=5]
+[ext_resource path="res://sprites/star.png" type="Texture" id=6]
+[ext_resource path="res://sprites/bg.png" type="Texture" id=7]
+[ext_resource path="res://sprites/status_star.png" type="Texture" id=8]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 552.359, 605.282, 0, 0, 0, 0, 762.132, 605.282 )
+}
+
+[node name="main__game" type="Node"]
+script = ExtResource( 4 )
+
+[node name="stage_1" type="Node2D" parent="."]
+
+[node name="list_star" type="Node2D" parent="stage_1"]
+
+[node name="stars" parent="stage_1/list_star" instance=ExtResource( 1 )]
+position = Vector2( 226.737, 349.086 )
+
+[node name="stars2" parent="stage_1/list_star" instance=ExtResource( 1 )]
+position = Vector2( 1052.87, 349.086 )
+
+[node name="stars3" parent="stage_1/list_star" instance=ExtResource( 1 )]
+position = Vector2( 638.869, 130.086 )
+
+[node name="TileMap" type="TileMap" parent="stage_1"]
+tile_set = ExtResource( 5 )
+format = 1
+tile_data = PoolIntArray( -196609, 0, 0, -262144, 0, 0, -262143, 0, 0, -262142, 0, 0, -262141, 0, 0, -262140, 0, 0, -262139, 0, 0, -262138, 0, 0, -262137, 0, 0, -262136, 0, 0, -262135, 0, 0, -262134, 0, 0, -262133, 0, 0, -262132, 0, 0, -262131, 0, 0, -262130, 0, 0, -262129, 0, 0, -262128, 0, 0, -262127, 0, 0, -262126, 0, 0, -262125, 0, 0, -262124, 0, 0, -262123, 0, 0, -262122, 0, 0, -262121, 0, 0, -262120, 0, 0, -262119, 0, 0, -262118, 0, 0, -131073, 0, 0, -196603, 0, 0, -196596, 0, 0, -196590, 0, 0, -196582, 0, 0, -65537, 0, 0, -131067, 0, 0, -131060, 0, 0, -131054, 0, 0, -131046, 0, 0, -1, 0, 0, -65510, 0, 0, 65535, 0, 0, 26, 0, 0, 131071, 0, 0, 65562, 0, 0, 196607, 0, 0, 131098, 0, 0, 262143, 0, 0, 196624, 0, 0, 196627, 0, 0, 196634, 0, 0, 327679, 0, 0, 262152, 0, 0, 262153, 0, 0, 262154, 0, 0, 262155, 0, 0, 262170, 0, 0, 393215, 0, 0, 327703, 0, 0, 327704, 0, 0, 327705, 0, 0, 327706, 0, 0, 458751, 0, 0, 393223, 0, 0, 393228, 0, 0, 393229, 0, 0, 393239, 0, 0, 393240, 0, 0, 393241, 0, 0, 393242, 0, 0, 524287, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458768, 0, 0, 458769, 0, 0, 458770, 0, 0, 458771, 0, 0, 458775, 0, 0, 458776, 0, 0, 458777, 0, 0, 458778, 0, 0, 589823, 0, 0, 524311, 0, 0, 524312, 0, 0, 524313, 0, 0, 524314, 0, 0, 655359, 0, 0, 589830, 0, 0, 589838, 0, 0, 589845, 0, 0, 589846, 0, 0, 589847, 0, 0, 589848, 0, 0, 589849, 0, 0, 589850, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0, 655379, 0, 0, 655380, 0, 0, 655381, 0, 0, 655382, 0, 0, 655383, 0, 0, 655384, 0, 0, 655385, 0, 0, 655386, 0, 0 )
+
+[node name="player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 118.794, 277.223 )
+
+[node name="Camera2D" parent="player" index="2"]
+smoothing_enabled = true
+
+[node name="bg" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Sprite" type="Sprite" parent="bg"]
+position = Vector2( 0.89093, 0 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="star_status" type="CanvasLayer" parent="."]
+
+[node name="star1" type="Sprite" parent="star_status"]
+position = Vector2( 45.3571, 47.877 )
+texture = ExtResource( 8 )
+
+[node name="on" type="Sprite" parent="star_status/star1"]
+visible = false
+texture = ExtResource( 6 )
+
+[node name="star2" type="Sprite" parent="star_status"]
+position = Vector2( 113.357, 47.877 )
+texture = ExtResource( 8 )
+
+[node name="on" type="Sprite" parent="star_status/star2"]
+visible = false
+texture = ExtResource( 6 )
+
+[node name="star3" type="Sprite" parent="star_status"]
+position = Vector2( 182.357, 47.877 )
+texture = ExtResource( 8 )
+
+[node name="on" type="Sprite" parent="star_status/star3"]
+visible = false
+texture = ExtResource( 6 )
+
+[node name="enemys" type="Node2D" parent="."]
+
+[node name="path_enemy" parent="enemys" instance=ExtResource( 3 )]
+
+[node name="PathFollow2D" parent="enemys/path_enemy" index="0"]
+position = Vector2( 526.536, 604.869 )
+
+[node name="AnimatedSprite" parent="enemys/path_enemy/PathFollow2D/enemy" index="0"]
+frame = 0
+
+[node name="path_enemy2" parent="enemys" instance=ExtResource( 3 )]
+position = Vector2( -11.6541, -381.407 )
+curve = SubResource( 1 )
+
+[node name="path_enemy3" parent="enemys" instance=ExtResource( 3 )]
+position = Vector2( 501.126, -199.179 )
+curve = SubResource( 1 )
+[connection signal="area_entered" from="player/player_col" to="." method="_on_player_col_area_entered"]
+
+[editable path="player"]
+
+[editable path="enemys/path_enemy"]

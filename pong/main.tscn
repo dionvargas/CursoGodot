@@ -1,0 +1,211 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://sprites/campo.png" type="Texture" id=1]
+[ext_resource path="res://sprites/barrier1.png" type="Texture" id=2]
+[ext_resource path="res://sprites/ball.png" type="Texture" id=3]
+[ext_resource path="res://sprites/player_1.png" type="Texture" id=4]
+[ext_resource path="res://sprites/player2.png" type="Texture" id=5]
+[ext_resource path="res://sprites/barrier2.png" type="Texture" id=6]
+[ext_resource path="res://font/theboldfont.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://sound/pow.wav" type="AudioStream" id=8]
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Node
+
+# Variáveis da bola
+var dir_x = -1
+var dir_y = -1
+var speed = 300
+
+var p1 = 0
+var p2 = 0
+
+func _ready():
+	randomize()
+	speed = int(rand_range(300, 400))
+
+func _process(delta):
+	ball(delta)
+	player_1()
+	player_2()
+	
+func ball(delta):
+	get_node(\"ball/ball_col\").position.x += speed * dir_x * delta
+	get_node(\"ball/ball_col\").position.y += speed * dir_y * delta
+	if $ball/ball_col.position.x > 680:
+		$ball/ball_col.position.x = 0
+		dir_x *= -1
+		randomize()
+		speed = int(rand_range(300, 400))
+		p1 += 1
+		$Control/p1.text = str(p1)
+		
+	elif $ball/ball_col.position.x < -680:
+		$ball/ball_col.position.x = 0
+		dir_x *= -1
+		randomize()
+		speed = int(rand_range(300, 400))
+		p2 += 1
+		$Control/p2.text = str(p2)
+
+
+func _on_barrier_col_area_entered(area):
+	if area.name == \"ball_col\":
+		dir_y *= -1
+		$sounds/pow.play()
+
+
+func player_1():
+	if Input.is_action_pressed(\"ui_down\"):
+		$player1/player_col.position.y += 4
+	elif Input.is_action_pressed(\"ui_up\"):
+		$player1/player_col.position.y -= 4
+		
+	if $player1/player_col.position.y > 230:
+		$player1/player_col.position.y = 230
+	elif $player1/player_col.position.y < -230:
+		$player1/player_col.position.y = -230
+
+
+func _on_player_col_area_entered(area):
+	if area.name == \"ball_col\":
+		dir_x *= -1
+		speed += 30
+		$sounds/pow.play()
+
+
+func player_2():
+	$player2/player_col.position.y = $ball/ball_col.position.y
+	
+	if $player2/player_col.position.y > 230:
+		$player2/player_col.position.y = 230
+	elif $player2/player_col.position.y < -230:
+		$player2/player_col.position.y = -230
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 656, 32 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 24, 72 )
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 16.0
+
+[sub_resource type="DynamicFont" id=5]
+size = 50
+font_data = ExtResource( 7 )
+
+[node name="main" type="Node"]
+script = SubResource( 4 )
+
+[node name="bg" type="Node2D" parent="."]
+position = Vector2( -32, 0 )
+
+[node name="background" type="Sprite" parent="bg"]
+position = Vector2( 40, 16 )
+texture = ExtResource( 1 )
+centered = false
+offset = Vector2( -6.67419, -16.6833 )
+
+[node name="barrier1" type="Node2D" parent="."]
+
+[node name="barrier_col" type="Area2D" parent="barrier1"]
+
+[node name="Sprite" type="Sprite" parent="barrier1/barrier_col"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="barrier1/barrier_col"]
+position = Vector2( 640, 32 )
+shape = SubResource( 1 )
+
+[node name="barrier2" type="Node2D" parent="."]
+
+[node name="barrier_col" type="Area2D" parent="barrier2"]
+
+[node name="Sprite" type="Sprite" parent="barrier2/barrier_col"]
+position = Vector2( 0, 656 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="barrier2/barrier_col"]
+position = Vector2( 640, 688 )
+shape = SubResource( 1 )
+
+[node name="player1" type="Node2D" parent="."]
+position = Vector2( 80, 360 )
+
+[node name="player_col" type="Area2D" parent="player1"]
+
+[node name="Sprite" type="Sprite" parent="player1/player_col"]
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player1/player_col"]
+shape = SubResource( 2 )
+
+[node name="player2" type="Node2D" parent="."]
+position = Vector2( 1200, 360 )
+
+[node name="player_col" type="Area2D" parent="player2"]
+
+[node name="Sprite" type="Sprite" parent="player2/player_col"]
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player2/player_col"]
+shape = SubResource( 2 )
+
+[node name="ball" type="Node2D" parent="."]
+position = Vector2( 640, 360 )
+
+[node name="ball_col" type="Area2D" parent="ball"]
+
+[node name="Sprite" type="Sprite" parent="ball/ball_col"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_col"]
+position = Vector2( 0, -3.05176e-05 )
+shape = SubResource( 3 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="p1" type="Label" parent="Control"]
+margin_left = 424.0
+margin_top = 64.0
+margin_right = 568.0
+margin_bottom = 168.0
+custom_fonts/font = SubResource( 5 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="p2" type="Label" parent="Control"]
+margin_left = 712.0
+margin_top = 64.0
+margin_right = 856.0
+margin_bottom = 168.0
+custom_fonts/font = SubResource( 5 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sounds" type="Node" parent="."]
+
+[node name="pow" type="AudioStreamPlayer" parent="sounds"]
+stream = ExtResource( 8 )
+[connection signal="area_entered" from="barrier1/barrier_col" to="." method="_on_barrier_col_area_entered"]
+[connection signal="area_entered" from="barrier2/barrier_col" to="." method="_on_barrier_col_area_entered"]
+[connection signal="area_entered" from="player1/player_col" to="." method="_on_player_col_area_entered"]
+[connection signal="area_entered" from="player2/player_col" to="." method="_on_player_col_area_entered"]

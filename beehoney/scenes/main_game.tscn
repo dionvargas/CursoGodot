@@ -1,0 +1,139 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://sprites/bg.png" type="Texture" id=1]
+[ext_resource path="res://sprites/bg_score.png" type="Texture" id=2]
+[ext_resource path="res://scenes/bee.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/flower.png" type="Texture" id=4]
+[ext_resource path="res://sprites/icon.png" type="Texture" id=5]
+[ext_resource path="res://font/theboldfont.ttf" type="DynamicFontData" id=6]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node
+
+var score = 0
+var vidas = 3
+
+var spider = preload(\"res://scenes/spiders.tscn\")
+var flower = preload(\"res://scenes/flower.tscn\")
+
+func _on_bee_area_entered(area):
+	if area.name == \"spiders\":
+		lifes()
+	
+	if area.name == \"flower\":
+		score()
+		area.queue_free()
+		
+func score():
+	score += 1
+	$control/score.text = str(score)
+
+func lifes():
+	vidas -= 1
+	if vidas == 2:
+		$sprites/bg_score/bee3.hide()
+	elif vidas == 1:
+		$sprites/bg_score/bee2.hide()
+	else:
+		get_tree().change_scene(\"res://scenes/game_over.tscn\")
+
+
+func _on_timer_timeout():
+	spider_spaw()
+
+func _on_timer_flower_timeout():
+	flower_spaw()
+
+func spider_spaw():
+	var new_spider = spider.instance()
+	new_spider.position.x = rand_range(0, 360)
+	new_spider.position.y = -20
+	$sprites/bg.add_child(new_spider)
+	
+func flower_spaw():
+	var new_flower = flower.instance()
+	new_flower.position.x = rand_range(0, 360)
+	new_flower.position.y = -20
+	$sprites/bg.add_child(new_flower)
+"
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 6 )
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Area2D
+
+
+func _ready():
+	pass
+
+func _process(delta):
+	var x = get_global_mouse_position().x - position.x
+	var y = get_global_mouse_position().y - position.y
+	
+	translate(Vector2(x,y))
+"
+
+[node name="main_game" type="Node"]
+script = SubResource( 2 )
+
+[node name="sprites" type="Node2D" parent="."]
+
+[node name="bg" type="Sprite" parent="sprites"]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="bg_score" type="Sprite" parent="sprites"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="bee1" type="Sprite" parent="sprites/bg_score"]
+position = Vector2( 37, 28 )
+texture = ExtResource( 5 )
+
+[node name="bee2" type="Sprite" parent="sprites/bg_score"]
+position = Vector2( 93, 28 )
+texture = ExtResource( 5 )
+
+[node name="bee3" type="Sprite" parent="sprites/bg_score"]
+position = Vector2( 153, 28 )
+texture = ExtResource( 5 )
+
+[node name="control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score" type="Label" parent="control"]
+margin_left = 235.0
+margin_top = 1.0
+margin_right = 359.0
+margin_bottom = 94.0
+custom_fonts/font = SubResource( 3 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="control"]
+position = Vector2( 230.722, 29.2167 )
+texture = ExtResource( 4 )
+
+[node name="bee" parent="." instance=ExtResource( 3 )]
+script = SubResource( 1 )
+
+[node name="timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="timer_flower" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+[connection signal="area_entered" from="bee" to="." method="_on_bee_area_entered"]
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="timer_flower" to="." method="_on_timer_flower_timeout"]

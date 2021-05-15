@@ -1,0 +1,145 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://sprites/bg.png" type="Texture" id=1]
+[ext_resource path="res://scences/tiles.res" type="TileSet" id=2]
+[ext_resource path="res://scences/player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scences/stars.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scripts/main_game.gd" type="Script" id=5]
+[ext_resource path="res://sprites/status_star.png" type="Texture" id=6]
+[ext_resource path="res://sprites/star.png" type="Texture" id=7]
+[ext_resource path="res://scences/enemy.tscn" type="PackedScene" id=8]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 552.359, 605.282, 0, 0, 0, 0, 762.132, 605.282 )
+}
+
+[sub_resource type="Curve2D" id=2]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 554.081, 606.414, 0, 0, 0, 0, 743.586, 605 )
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "walk"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("PathFollow2D:unit_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PathFollow2D/enemy/AnimatedSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true ]
+}
+
+[node name="main__game" type="Node"]
+script = ExtResource( 5 )
+
+[node name="stage_1" type="Node2D" parent="."]
+
+[node name="list_star" type="Node2D" parent="stage_1"]
+
+[node name="stars" parent="stage_1/list_star" instance=ExtResource( 4 )]
+position = Vector2( 226.737, 349.086 )
+
+[node name="stars2" parent="stage_1/list_star" instance=ExtResource( 4 )]
+position = Vector2( 1052.87, 349.086 )
+
+[node name="stars3" parent="stage_1/list_star" instance=ExtResource( 4 )]
+position = Vector2( 1822.85, -130.592 )
+
+[node name="TileMap" type="TileMap" parent="stage_1"]
+tile_set = ExtResource( 2 )
+format = 1
+tile_data = PoolIntArray( -196609, 0, 0, -262144, 0, 0, -262143, 0, 0, -262142, 0, 0, -262141, 0, 0, -262140, 0, 0, -262139, 0, 0, -262138, 0, 0, -262137, 0, 0, -262136, 0, 0, -262135, 0, 0, -262134, 0, 0, -262133, 0, 0, -262132, 0, 0, -262131, 0, 0, -262130, 0, 0, -262129, 0, 0, -262128, 0, 0, -262127, 0, 0, -262126, 0, 0, -262125, 0, 0, -262124, 0, 0, -262123, 0, 0, -262122, 0, 0, -262121, 0, 0, -262120, 0, 0, -262119, 0, 0, -262118, 0, 0, -262117, 0, 0, -262116, 0, 0, -262115, 0, 0, -262114, 0, 0, -262113, 0, 0, -262112, 0, 0, -262111, 0, 0, -131073, 0, 0, -196603, 0, 0, -196596, 0, 0, -196590, 0, 0, -196585, 0, 0, -196582, 0, 0, -196575, 0, 0, -65537, 0, 0, -131067, 0, 0, -131060, 0, 0, -131054, 0, 0, -131049, 0, 0, -131046, 0, 0, -131039, 0, 0, -1, 0, 0, -65510, 0, 0, -65509, 0, 0, -65508, 0, 0, -65507, 0, 0, -65503, 0, 0, 65535, 0, 0, 26, 0, 0, 32, 0, 0, 33, 0, 0, 131071, 0, 0, 65562, 0, 0, 65568, 0, 0, 65569, 0, 0, 196607, 0, 0, 131098, 0, 0, 131102, 0, 0, 131103, 0, 0, 131104, 0, 0, 131105, 0, 0, 262143, 0, 0, 196624, 0, 0, 196627, 0, 0, 196634, 0, 0, 196635, 0, 0, 196641, 0, 0, 327679, 0, 0, 262152, 0, 0, 262153, 0, 0, 262154, 0, 0, 262155, 0, 0, 262170, 0, 0, 262171, 0, 0, 262177, 0, 0, 393215, 0, 0, 327706, 0, 0, 327707, 0, 0, 327708, 0, 0, 327709, 0, 0, 327713, 0, 0, 458751, 0, 0, 393223, 0, 0, 393228, 0, 0, 393229, 0, 0, 393249, 0, 0, 524287, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458768, 0, 0, 458769, 0, 0, 458770, 0, 0, 458771, 0, 0, 458783, 0, 0, 458784, 0, 0, 458785, 0, 0, 589823, 0, 0, 524318, 0, 0, 524319, 0, 0, 524320, 0, 0, 524321, 0, 0, 655359, 0, 0, 589830, 0, 0, 589838, 0, 0, 589845, 0, 0, 589846, 0, 0, 589847, 0, 0, 589848, 0, 0, 589849, 0, 0, 589850, 0, 0, 589855, 0, 0, 589856, 0, 0, 589857, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0, 655379, 0, 0, 655380, 0, 0, 655381, 0, 0, 655382, 0, 0, 655383, 0, 0, 655384, 0, 0, 655385, 0, 0, 655386, 0, 0, 655387, 0, 0, 655388, 0, 0, 655389, 0, 0, 655390, 0, 0, 655391, 0, 0, 655392, 0, 0, 655393, 0, 0 )
+
+[node name="player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 118.794, 277.223 )
+
+[node name="Camera2D" parent="player" index="2"]
+smoothing_enabled = true
+
+[node name="bg" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Sprite" type="Sprite" parent="bg"]
+position = Vector2( 0.89093, 0 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="star_status" type="CanvasLayer" parent="."]
+
+[node name="star1" type="Sprite" parent="star_status"]
+position = Vector2( 45.3571, 47.877 )
+texture = ExtResource( 6 )
+
+[node name="on" type="Sprite" parent="star_status/star1"]
+visible = false
+texture = ExtResource( 7 )
+
+[node name="star2" type="Sprite" parent="star_status"]
+position = Vector2( 113.357, 47.877 )
+texture = ExtResource( 6 )
+
+[node name="on" type="Sprite" parent="star_status/star2"]
+visible = false
+texture = ExtResource( 7 )
+
+[node name="star3" type="Sprite" parent="star_status"]
+position = Vector2( 182.357, 47.877 )
+texture = ExtResource( 6 )
+
+[node name="on" type="Sprite" parent="star_status/star3"]
+visible = false
+texture = ExtResource( 7 )
+
+[node name="enemys" type="Node2D" parent="."]
+
+[node name="path_enemy" parent="enemys" instance=ExtResource( 8 )]
+
+[node name="PathFollow2D" parent="enemys/path_enemy" index="0"]
+position = Vector2( 526.536, 604.869 )
+
+[node name="AnimatedSprite" parent="enemys/path_enemy/PathFollow2D/enemy" index="0"]
+frame = 1
+
+[node name="path_enemy2" parent="enemys" instance=ExtResource( 8 )]
+position = Vector2( -11.6541, -381.407 )
+curve = SubResource( 1 )
+
+[node name="path_enemy3" parent="enemys" instance=ExtResource( 8 )]
+position = Vector2( 1207.34, 4.71988 )
+curve = SubResource( 2 )
+
+[node name="PathFollow2D" parent="enemys/path_enemy3" index="0"]
+position = Vector2( 600.04, 605.282 )
+rotation = 0.0
+
+[node name="AnimatedSprite" parent="enemys/path_enemy3/PathFollow2D/enemy" index="0"]
+frame = 1
+
+[node name="AnimationPlayer" parent="enemys/path_enemy3" index="1"]
+anims/walk = SubResource( 3 )
+[connection signal="area_entered" from="player/player_col" to="." method="_on_player_col_area_entered"]
+
+[editable path="player"]
+
+[editable path="enemys/path_enemy"]
+
+[editable path="enemys/path_enemy3"]

@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://sprites/spider_3.png" type="Texture" id=1]
+[ext_resource path="res://sprites/spider_1.png" type="Texture" id=2]
+[ext_resource path="res://sprites/spider_2.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Area2D
+
+
+func _ready():
+	pass
+
+func _process(delta):
+	position.y += 300 * delta
+	
+	if position.y >= 650:
+		queue_free()
+"
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 34.8233, 34.7359 )
+
+[node name="spiders" type="Area2D"]
+position = Vector2( 286.177, 233.736 )
+script = SubResource( 4 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 3 )
